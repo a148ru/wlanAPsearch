@@ -1,0 +1,12 @@
+﻿1>------ Build started: Project: wlan-0.0.1-alfa, Configuration: Release Win32 ------
+1>pch.cpp
+1>wlan-0.0.1-alfa.cpp
+1>c:\users\a148ru\source\repos\wlan-0.0.1-alfa\wlan-0.0.1-alfa\wlan-0.0.1-alfa.cpp(55): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\a148ru\source\repos\wlan-0.0.1-alfa\wlan-0.0.1-alfa\wlan-0.0.1-alfa.cpp(57): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\a148ru\source\repos\wlan-0.0.1-alfa\wlan-0.0.1-alfa\wlan-0.0.1-alfa.cpp(67): warning C4305: '=': truncation from 'double' to 'float'
+1>Generating code
+1>All 4 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+1>Finished generating code
+1>wlan-0.0.1-alfa.vcxproj -> C:\Users\a148ru\source\repos\wlan-0.0.1-alfa\Release\wlan-0.0.1-alfa.exe
+1>Done building project "wlan-0.0.1-alfa.vcxproj".
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
