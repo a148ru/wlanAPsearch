@@ -34,3 +34,5 @@
 //Need to link with Wlanapi.lib and Ole32.lib
 #pragma comment(lib, "wlanapi.lib")
 #pragma comment(lib, "ole32.lib")
+
+typedef FILE *PFILE;
