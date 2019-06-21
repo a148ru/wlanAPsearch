@@ -4,17 +4,20 @@
 #include "pch.h"
 void makefile(PFILE stream, char* filename, PWLAN_BSS_LIST pBssList);
 void printconsole(PWLAN_BSS_LIST pBssList);
+int getTime(char returntime[256]);
 
 int main(int argc, char **argv)
 {
 	// Декларируем и инициализируем переменные
-	char filename[100] = { '\0' };
+	char filename[256] = { '\0' };
+	int TIMER_PAUSE = 2;
 	FILE *stream = NULL;
 	HANDLE hClient = NULL;
 	DWORD dwMaxClient = 2;
 	DWORD dwCurVersion = 0;
 	DWORD dwResult = 0;
 	DWORD dwRetVal = 0;
+	char sep = ';';
 
 	/* Переменные используемые для  WlanEnumInterfaces */
 	PWLAN_INTERFACE_INFO_LIST pIfList = NULL;
@@ -23,13 +26,50 @@ int main(int argc, char **argv)
 	//PWLAN_BSS_ENTRY pBssEntry = NULL;
 	BOOL bSecurityEnabled = TRUE;
 
-	if (argv[1]) {
-		for (int i = 0; i < 100 & i<strlen(argv[1]); i++) {
-			filename[i] = argv[1][i];
+	try
+	{
+		if (argc > 1) {
+			for (int i = 1; i < argc; i++) {
+				switch ((int)argv[i][0])
+				{
+				case(slsh):
+					switch ((int)argv[i][1])
+					{
+					case(time_pause):
+						if (atoi(argv[i + 1]) > 0)TIMER_PAUSE = atoi(argv[i + 1]);
+						break;
+					case(file_name):
+						if (argv[i + 1]) {
+							strcpy(filename, argv[i + 1]);
+						}
+						break;
+					case(auto_f):
+						if (!getTime(filename))throw 1000;
+						else strcat(filename, ".csv");
+						break;
+					case(iface):
+						break;
+					case(separator):
+						if (argv[i + 1][0])sep = argv[i + 1][0];
+						break;
+					default:
+						break;
+					}
+				default:
+					break;
+				}
+			}
 		}
 	}
-
-
+	catch (const std::exception& a)
+	{
+		wprintf(L"Error: %hs", a.what());
+		return -1;
+	}
+	catch (int err) {
+		wprintf(L"Error: %i", err);
+		return err;
+	}
 	// WlanOpenHandle()
 	dwResult = WlanOpenHandle(dwMaxClient, NULL, &dwCurVersion, &hClient);
 	if (dwResult != ERROR_SUCCESS) {
@@ -46,7 +86,7 @@ int main(int argc, char **argv)
 		for (int i = 0; i < (int)pIfList->dwNumberOfItems; i++) {
 			pIfInfo = (WLAN_INTERFACE_INFO *)&pIfList->InterfaceInfo[i];
 			dwResult = WlanScan(hClient, &pIfInfo->InterfaceGuid, NULL, NULL, NULL);
-			Sleep(2000);
+			Sleep(TIMER_PAUSE*1000);
 			if (dwResult != ERROR_SUCCESS) {
 				return 1;
 			}
@@ -123,4 +163,15 @@ void printconsole(PWLAN_BSS_LIST pBssList)
 		wprintf(L";%i dBm;%i;%.*f kGz\n", pBssEntry->lRssi, pBssEntry->uLinkQuality, 1, Q);
 	}
 
+}
+
+int getTime(char returntime[256]) {
+	size_t res;
+	time_t rawtime;
+	const char *format = { "%d%m%g-%H%M%S" };
+	time(&rawtime);
+	tm *nowtime = localtime(&rawtime);
+	res = strftime(returntime, MAXCHAR, format, nowtime);
+	if (res)return 1;
+	else return NULL;
 }

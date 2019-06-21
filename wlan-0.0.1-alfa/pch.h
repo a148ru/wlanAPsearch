@@ -36,3 +36,11 @@
 #pragma comment(lib, "ole32.lib")
 
 typedef FILE *PFILE;
+enum __p__ {
+	slsh = 47,
+	auto_f = 97,
+	file_name = 102,
+	iface = 105,
+	separator = 115,
+	time_pause = 116
+};
